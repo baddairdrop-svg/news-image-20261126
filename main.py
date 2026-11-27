@@ -43,7 +43,7 @@ BURGUNDY = (120, 30, 42)
 RED = (178, 44, 52)
 GOLD = (198, 159, 38)
 GOLDD = (146, 114, 24)
-GREY = (104, 111, 124)
+GREY = (70, 76, 90)
 HAIR = (214, 207, 191)
 WHITE = (255, 255, 255)
 CREAM2 = (239, 232, 217)
@@ -537,7 +537,7 @@ HEROES = [
      "REUTERS · AP", "NO DEAL", 18.0),
     ("skyline", "GAZA", "WAR", "Israeli strikes kill at least "
      "nine in Gaza", "Overnight strikes hit Deir Al-Balah, Gaza City "
-     "and Bureij; a deputy minister among the dead, medics said.",
+     "and Bureij; a deputy minister among the dead.",
      "REUTERS", "AT LEAST 9 DEAD", 4.0),
     ("rates", "SEOUL", "ECONOMY", "Bank of Korea raises rate "
      "to 3.25%", "Third hike this year, highest since Nov 2024; "
@@ -942,7 +942,7 @@ def draw_masthead(c):
     c.text_center(W // 2, 68, "Thursday 26 November 2026", SERIF,
                   SERIF_EM, SERIF_ASC, 40, INK)
     c.text_center(W // 2, 88, SUBHEAD, SERIFR, SERIFR_EM, SERIFR_ASC,
-                  12.5, BURGUNDY)
+                  13, BURGUNDY)
 
 
 def draw_region_strip(c):
@@ -956,7 +956,7 @@ def draw_region_strip(c):
         c.rect(x, y, wseg, h, col)
         tc = INK if col == GOLD else WHITE
         c.text_center(x + wseg / 2, y + 10.5, "%s %d" % (name, counts[i]),
-                      SANSB, SANSB_EM, SANSB_ASC, 6.2, tc, tracking=0.1)
+                      SANSB, SANSB_EM, SANSB_ASC, 6.8, tc, tracking=0.1)
         x += wseg
     fcounts = {}
     for f in FIELDS:
@@ -964,7 +964,7 @@ def draw_region_strip(c):
     ranked = sorted(fcounts.items(), key=lambda kv: (-kv[1], kv[0]))
     line = "%d FIELDS · " % len(fcounts) + " · ".join(
         "%s %d" % (name, n) for (name, n) in ranked)
-    c.text_center(W // 2, 124, line, SANS, SANS_EM, SANS_ASC, 6.8, INK)
+    c.text_center(W // 2, 124, line, SANSB, SANSB_EM, SANSB_ASC, 6.4, INK)
 
 
 def draw_stats(c):
@@ -980,8 +980,8 @@ def draw_stats(c):
             c.vline(x0, y + 8, h - 16, HAIR, 1)
         c.text_center(x0 + cw // 2, y + 29, num, SERIF, SERIF_EM,
                       SERIF_ASC, 24, NAVY)
-        c.text_center(x0 + cw // 2, y + 43, label, SANS, SANS_EM,
-                      SANS_ASC, 7.5, GREY, tracking=0.6)
+        c.text_center(x0 + cw // 2, y + 43, label, SANSB, SANSB_EM,
+                      SANSB_ASC, 8.2, GREY, tracking=0.6)
 
 
 def draw_conf_badge(c, right, y, text):
@@ -1013,12 +1013,12 @@ def draw_hero(c, x, y, w, h, num, hero):
     ty = c.para(x + 12, ty + 17, headline, SERIF, SERIF_EM, SERIF_ASC,
                 16, INK, w - 24, leading=18)
     ty = c.para(x + 12, ty + 1, summary, SERIFR, SERIFR_EM, SERIFR_ASC,
-                10.5, INK, w - 24, leading=12.5)
+                11, INK, w - 24, leading=13)
     wx = c.text(x + 12, ty + 3, "WHY IT MATTERS ", SANSB, SANSB_EM,
-                SANSB_ASC, 7.5, BURGUNDY, tracking=0.4)
+                SANSB_ASC, 8, BURGUNDY, tracking=0.4)
     c.text(wx, ty + 3, HERO_WHY[num - 1], SERIFR, SERIFR_EM, SERIFR_ASC,
-           10, INK)
-    c.text(x + 12, y + h - 10, source, SANS, SANS_EM, SANS_ASC, 8,
+           10.5, INK)
+    c.text(x + 12, y + h - 10, source, SANSB, SANSB_EM, SANSB_ASC, 8.5,
            GREY, tracking=0.8)
 
 
@@ -1030,18 +1030,18 @@ def draw_grid_card(c, x, y, w, h, num, item):
     c.text_center(x + 11, y + 17, str(num), SERIF, SERIF_EM, SERIF_ASC,
                   13, WHITE)
     c.text(x + 29, y + 15, place + " · " + cat, SANSB, SANSB_EM,
-           SANSB_ASC, 7.5, BURGUNDY, tracking=0.4)
+           SANSB_ASC, 8, BURGUNDY, tracking=0.4)
     banner = GRID_BANNER[num - 4]
     bw = text_width(banner, SANSB, SANSB_EM, 6.5, 0.4) + 10
     c.rect(x + w - 8 - bw, y + 4, bw, 11, INK)
     c.text_center(x + w - 8 - bw / 2, y + 12.5, banner, SANSB, SANSB_EM,
                   SANSB_ASC, 6.5, WHITE, tracking=0.4)
-    ty = c.para(x + 12, y + 40, headline, SERIF, SERIF_EM, SERIF_ASC,
-                11.5, INK, w - 24, leading=12.5)
-    c.para(x + 12, ty + 1, summary, SERIFR, SERIFR_EM, SERIFR_ASC, 9,
-           INK, w - 24, leading=10.5)
-    sx = c.text(x + 12, y + h - 6, source, SANS, SANS_EM, SANS_ASC,
-                7.5, GREY, tracking=0.6)
+    ty = c.para(x + 12, y + 38, headline, SERIF, SERIF_EM, SERIF_ASC,
+                12.2, INK, w - 24, leading=13)
+    c.para(x + 12, ty + 1, summary, SERIFR, SERIFR_EM, SERIFR_ASC, 9.6,
+           INK, w - 24, leading=11)
+    sx = c.text(x + 12, y + h - 6, source, SANSB, SANSB_EM, SANSB_ASC,
+                8, GREY, tracking=0.6)
     conf = GRID_CONF[num - 4]
     letter = {"OFFICIAL": "C", "REPORTED": "R", "CLAIM": "CL"}[conf]
     ccol = NAVY if conf == "OFFICIAL" else GREY
@@ -1053,11 +1053,11 @@ def draw_grid_card(c, x, y, w, h, num, item):
 
 def draw_bottom(c):
     counts = region_counts()
-    c.text(24, 612, "WHERE IT HAPPENED", SANSB, SANSB_EM, SANSB_ASC, 11,
+    c.text(24, 608, "WHERE IT HAPPENED", SANSB, SANSB_EM, SANSB_ASC, 11,
            INK, tracking=1.2)
-    c.text_right(384, 612, "dots = story numbers", SANS, SANS_EM,
-                 SANS_ASC, 8.5, GREY)
-    draw_map(c, 24, 620, 360, 146, PINS)
+    c.text_right(384, 608, "dots = story numbers", SANSB, SANSB_EM,
+                 SANSB_ASC, 8.5, GREY)
+    draw_map(c, 24, 616, 360, 142, PINS)
     c.text(24, 780, "BY REGION", SANSB, SANSB_EM, SANSB_ASC, 9, NAVY,
            tracking=1.0)
     c.text(96, 780, "Nos. 12, 13, 59, 77 no pin", SANS, SANS_EM,
@@ -1076,11 +1076,11 @@ def draw_bottom(c):
            "happened or was first reported on Thursday 26 November "
            "2026 (any time zone, shown in UTC)." % len(set(FIELDS)),
            SANS, SANS_EM, SANS_ASC, 8, INK, 360, leading=10.5)
-    c.text(400, 612, "ALSO ON THURSDAY 26 NOVEMBER", SANSB, SANSB_EM,
+    c.text(400, 608, "ALSO ON THURSDAY 26 NOVEMBER", SANSB, SANSB_EM,
            SANSB_ASC, 11, INK, tracking=1.2)
-    c.text_right(W - 24, 612, "65 more verified stories", SANS, SANS_EM,
-                 SANS_ASC, 9, GREY)
-    c.hline(400, 618, W - 424, HAIR, 0.8)
+    c.text_right(W - 24, 608, "65 more verified stories", SANSB, SANSB_EM,
+                 SANSB_ASC, 9, GREY)
+    c.hline(400, 614, W - 424, HAIR, 0.8)
     cols = [400, 706]
     rows = [33, 32]
     i = 0
@@ -1090,47 +1090,47 @@ def draw_bottom(c):
             num = i + 14
             i += 1
             x0 = cols[ci]
-            yy = 630 + r * 9.0
-            c.text(x0, yy, str(num), SANSB, SANSB_EM, SANSB_ASC, 7.4,
+            yy = 626 + r * 9.3
+            c.text(x0, yy, str(num), SANSB, SANSB_EM, SANSB_ASC, 8.0,
                    BURGUNDY)
             pcol = REGION_COLORS[REGIONS[num - 1]]
             if pcol == GOLD:
                 pcol = (150, 115, 20)
-            nx = c.text(x0 + 21, yy, place + ": ", SANSB, SANSB_EM,
-                        SANSB_ASC, 7.4, pcol)
-            hx = c.text(nx, yy, head, SANS, SANS_EM, SANS_ASC, 7.4, INK)
+            nx = c.text(x0 + 22, yy, place + ": ", SANSB, SANSB_EM,
+                        SANSB_ASC, 8.0, pcol)
+            hx = c.text(nx, yy, head, SANS, SANS_EM, SANS_ASC, 8.0, INK)
             if num in ALSO_CLAIM:
                 c.text(hx + 4, yy, "CLAIM", SANSB, SANSB_EM, SANSB_ASC,
-                       6.8, BURGUNDY)
+                       7.2, BURGUNDY)
 
 
 def draw_datecheck(c):
-    y, h = 922, 56
+    y, h = 926, 52
     c.rect(24, y, W - 48, h, CREAM2)
     c.frame(24, y, W - 48, h, BURGUNDY, 1.5)
-    c.text(36, y + 22, "DATE CHECK", SERIF, SERIF_EM, SERIF_ASC, 13,
+    c.text(36, y + 19, "DATE CHECK", SERIF, SERIF_EM, SERIF_ASC, 13,
            BURGUNDY)
-    c.para(36, y + 34, FOOTER, SANS, SANS_EM, SANS_ASC, 7.8, INK, 308,
-           leading=9.5)
+    c.para(36, y + 30, FOOTER, SANS, SANS_EM, SANS_ASC, 7.8, INK, 308,
+           leading=9)
     colw = 318
     for i, item in enumerate(DATE_CHECK):
         col = i // 4
         row = i % 4
         ix = 362 + col * colw
-        iy = y + 13 + row * 11.5
-        c.text(ix, iy, "X", SANSB, SANSB_EM, SANSB_ASC, 8, BURGUNDY)
-        c.text(ix + 12, iy, item, SANS, SANS_EM, SANS_ASC, 8, INK)
+        iy = y + 13 + row * 10.8
+        c.text(ix, iy, "X", SANSB, SANSB_EM, SANSB_ASC, 8.4, BURGUNDY)
+        c.text(ix + 12, iy, item, SANS, SANS_EM, SANS_ASC, 8.4, INK)
 
 
 def draw_footer(c):
     c.text_center(W // 2, 992,
                   "OFFICIAL = official record · REPORTED = wire report "
                   "· CLAIM = one side's statement · C/R on grid cards",
-                  SANS, SANS_EM, SANS_ASC, 8, GREY)
-    c.text_center(W // 2, 1004, FOOTER2, SANS, SANS_EM, SANS_ASC, 8.5,
+                  SANSB, SANSB_EM, SANSB_ASC, 8.6, GREY)
+    c.text_center(W // 2, 1004, FOOTER2, SANS, SANS_EM, SANS_ASC, 9,
                   GREY)
     c.text_center(W // 2, 1016, FOOTER_SOURCES, SANSB, SANSB_EM,
-                  SANSB_ASC, 7.5, INK, tracking=0.2)
+                  SANSB_ASC, 8.2, INK, tracking=0.2)
 
 
 def _validate():
