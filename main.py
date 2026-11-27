@@ -530,17 +530,20 @@ def icon_virus(c, x, y, s):
 
 
 def icon_missile(c, x, y, s):
-    c.polygon([(x + s * 0.86, y + s * 0.1), (x + s * 0.62, y + s * 0.2),
-               (x + s * 0.34, y + s * 0.48), (x + s * 0.5, y + s * 0.64),
-               (x + s * 0.78, y + s * 0.36)], NAVY)
-    c.polygon([(x + s * 0.34, y + s * 0.48), (x + s * 0.14, y + s * 0.56),
-               (x + s * 0.24, y + s * 0.66), (x + s * 0.5, y + s * 0.64)],
-              RED)
-    c.line(x + s * 0.2, y + s * 0.62, x + s * 0.04, y + s * 0.86,
-           ORANGE, 2.4)
-    c.line(x + s * 0.3, y + s * 0.7, x + s * 0.16, y + s * 0.94,
-           ORANGE, 2.0)
-    c.circle(x + s * 0.68, y + s * 0.3, s * 0.06, WHITE)
+    # smoke trail first, so the body sits on top of it
+    for i, (tx, ty, tr) in enumerate(((0.30, 0.66, 0.09),
+                                      (0.20, 0.78, 0.11),
+                                      (0.10, 0.90, 0.13))):
+        c.circle(x + s * tx, y + s * ty, s * tr, (150, 150, 158))
+    c.polygon([(x + s * 0.88, y + s * 0.08), (x + s * 0.62, y + s * 0.18),
+               (x + s * 0.36, y + s * 0.46), (x + s * 0.52, y + s * 0.62),
+               (x + s * 0.80, y + s * 0.34)], (96, 106, 126))
+    c.polygon([(x + s * 0.88, y + s * 0.08), (x + s * 0.74, y + s * 0.14),
+               (x + s * 0.80, y + s * 0.34)], RED)
+    c.polygon([(x + s * 0.36, y + s * 0.46), (x + s * 0.16, y + s * 0.52),
+               (x + s * 0.26, y + s * 0.64), (x + s * 0.52, y + s * 0.62)],
+              BURGUNDY)
+    c.circle(x + s * 0.66, y + s * 0.28, s * 0.055, WHITE)
 
 
 ICONS = {"bank": icon_bank, "train": icon_train, "chess": icon_chess,
