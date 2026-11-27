@@ -355,6 +355,10 @@ def scene_summit(c, x, y, w, h):
     for i in range(4):
         px = x + w * (0.30 + i * 0.13)
         c.rect(px, ty + 3, 14, 6, (238, 234, 222))
+    # budget tag on the table
+    c.rect(x + w * 0.40, ty + h * 0.20, 74, 13, (238, 234, 222))
+    c.text_center(x + w * 0.40 + 37, ty + h * 0.20 + 10, "€1.582TN",
+                  SANSB, SANSB_EM, SANSB_ASC, 8, BURGUNDY)
 
 
 def scene_skyline(c, x, y, w, h):
@@ -387,6 +391,10 @@ def scene_skyline(c, x, y, w, h):
                     c.rect(bx + 4 + wx * 9, y + h - bh + 6 + wy * 12,
                            4, 6, (240, 205, 120))
     c.hline(x, y + h - 1, w, (16, 14, 28), 2)
+    c.rect(x + 4, y + h - 13, 216, 11, (16, 14, 28))
+    c.text(x + 8, y + h - 5, "DEIR AL-BALAH · GAZA CITY · BUREIJ",
+           SANSB, SANSB_EM, SANSB_ASC, 6.5, (238, 205, 150),
+           tracking=0.6)
 
 
 def scene_rates(c, x, y, w, h):
@@ -414,6 +422,10 @@ def scene_rates(c, x, y, w, h):
         c.circle(px, py, 1.4, WHITE)
     ax, ay = pts[-1]
     c.polygon([(ax, ay - 8), (ax + 10, ay + 2), (ax - 4, ay + 4)], GOLD)
+    c.text(ax - 46, ay - 6, "3.25%", SANSB, SANSB_EM, SANSB_ASC, 11,
+           (238, 196, 120))
+    c.text(pts[0][0] - 2, pts[0][1] + 16, "2.75%", SANSB, SANSB_EM,
+           SANSB_ASC, 8, (150, 170, 205))
     # percent glyphs as bars of light
     c.text(x + w * 0.10, y + h * 0.34, "%", SERIF, SERIF_EM, SERIF_ASC,
            30, (110, 130, 170))
@@ -551,6 +563,24 @@ ICONS = {"bank": icon_bank, "train": icon_train, "chess": icon_chess,
          "scroll": icon_scroll, "rocket": icon_rocket,
          "chart": icon_chart, "drop": icon_drop,
          "virus": icon_virus, "missile": icon_missile}
+
+
+def draw_banner_scene(c, x, y, w, h, icon, rcol):
+    """Pictorial mini-scene for a grid card banner: tinted sky,
+    skyline silhouette, sun, and the story's emblem drawn large."""
+    light = tuple(int(v + (255 - v) * 0.82) for v in rcol)
+    mid = tuple(int(v + (255 - v) * 0.55) for v in rcol)
+    c.vgrad(x, y, w, h, light, mid)
+    c.circle(x + w - 16, y + 10, 6, (238, 196, 120))
+    # skyline silhouette along the bottom of the band
+    sil = tuple(int(v * 0.55) for v in rcol)
+    towers = [(0.03, 0.30), (0.13, 0.44), (0.24, 0.26), (0.62, 0.38),
+              (0.74, 0.28), (0.85, 0.46), (0.94, 0.32)]
+    for fx, fh in towers:
+        bh = h * fh
+        c.rect(x + w * fx, y + h - bh, w * 0.075, bh, sil)
+    c.hline(x, y + h - 1, w, sil, 1.6)
+    ICONS[icon](c, x + w / 2 - 15, y + 3, 30)
 
 
 # ---------------------------------------------------------------- stories
@@ -1082,12 +1112,10 @@ def draw_grid_card(c, x, y, w, h, num, item):
     icon, place, cat, headline, summary, source = item
     c.rect(x, y, w, h, WHITE)
     c.frame(x, y, w, h, HAIR, 1)
-    # illustrated banner band in the story's region tint
+    # illustrated banner scene in the story's region tint
     rcol = REGION_COLORS[REGIONS[num - 1]]
-    tint = tuple(int(v + (255 - v) * 0.78) for v in rcol)
-    c.rect(x + 1, y + 1, w - 2, 33, tint)
+    draw_banner_scene(c, x + 1, y + 1, w - 2, 33, icon, rcol)
     c.hline(x + 1, y + 34, w - 2, rcol, 1.6)
-    ICONS[icon](c, x + 34, y + 4, 26)
     c.rect(x + 3, y + 3, 24, 24, NAVY)
     c.text_center(x + 15, y + 20, str(num), SERIF, SERIF_EM, SERIF_ASC,
                   13, WHITE)
