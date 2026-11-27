@@ -1,6 +1,6 @@
-# Story data for news-image-20261126, rebuild v3 (pictorial).
+# Story data for news-image-20261126, rebuild v4 (pictorial).
 #
-# Selection: the 41 strongest stories from the 78-story verified
+# Selection: the 48 strongest stories from the 78-story verified
 # pool for Thursday 26 November 2026 (every story happened or was
 # first reported that day, verified against its named source in
 # the research database). No story outside that pool is used.
@@ -170,6 +170,27 @@ STORIES = [
     ("also", "", "Buenos Aires", "",
      "CGT marches over health-fund crisis", "", "",
      1, "Labour", "REPORTED", "", (-58.4, -34.6)),
+    ("also", "", "Doha", "",
+     "Sri Lanka A beat India A to reach Rising Stars final", "", "",
+     4, "Sport", "REPORTED", "", (51.5, 25.3)),
+    ("also", "", "Dubai", "",
+     "DOERS summit closes with Fraunhofer deal", "", "",
+     4, "Business", "REPORTED", "", (55.3, 25.3)),
+    ("also", "", "Islamabad", "",
+     "PIA says UK flights back on own 777 fleet", "", "",
+     6, "Transport", "REPORTED", "", (73.0, 33.7)),
+    ("also", "", "Strasbourg", "",
+     "EU parliament condemns Türkiye–Libya sea pact", "", "",
+     2, "Diplomacy", "REPORTED", "", (7.8, 48.6)),
+    ("also", "", "Amsterdam", "",
+     "groups ask court to halt Meta glasses sales", "", "",
+     2, "Tech", "REPORTED", "", (4.9, 52.4)),
+    ("also", "", "Nairobi", "",
+     "trade roadshow opens, Equity signs MUFG deal", "", "",
+     5, "Business", "REPORTED", "", (36.8, -1.3)),
+    ("also", "", "Dar es Salaam", "",
+     "World CEO Summit Africa opens", "", "",
+     5, "Business", "REPORTED", "", (39.3, -6.8)),
 ]
 
 REGION_NAMES = ["N AMERICA", "S AMERICA", "W EUROPE", "E EUROPE",
