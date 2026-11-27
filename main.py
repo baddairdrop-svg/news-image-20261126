@@ -18,6 +18,7 @@ panel with their real dates. All times are UTC.
 """
 
 import base64
+import math
 import os
 import struct
 import zlib
@@ -878,9 +879,40 @@ def draw_map(c, x, y, w, h, pins):
                 c.circle(px, py, 1.25, (96, 112, 138))
             lat -= 4.5
         lon += 4
+    # Dense clusters (Europe, SE Australia) would stack pins on top of
+    # each other at true positions, so their pins go on a ring around
+    # the cluster with a thin leader line back to the true point.
+    def cluster_of(plon, plat):
+        if -12 <= plon <= 42 and 34 <= plat <= 60:
+            return "EU"
+        if 112 <= plon <= 156 and -40 <= plat <= -10:
+            return "AU"
+        return None
+
+    placed = {}
+    for name in ("EU", "AU"):
+        members = [p for p in pins if cluster_of(p[1], p[2]) == name]
+        if not members:
+            continue
+        pts = [proj(p[1], p[2]) for p in members]
+        cx = sum(q[0] for q in pts) / len(pts)
+        cy = sum(q[1] for q in pts) / len(pts)
+        rx, ry = (58, 34) if name == "EU" else (50, 28)
+        members.sort(key=lambda p: math.atan2(proj(p[1], p[2])[1] - cy,
+                                              proj(p[1], p[2])[0] - cx))
+        for k, p in enumerate(members):
+            ang = -math.pi / 2 + 2 * math.pi * k / len(members)
+            qx = min(max(cx + rx * math.cos(ang), x + 7), x + w - 7)
+            qy = min(max(cy + ry * math.sin(ang), y + 7), y + h - 7)
+            placed[p[0]] = (qx, qy)
     for (num, plon, plat, pdx, pdy) in pins:
-        px, py = proj(plon, plat)
-        px, py = px + pdx, py + pdy
+        tx, ty = proj(plon, plat)
+        if num in placed:
+            px, py = placed[num]
+            c.line(tx, ty, px, py, (150, 140, 120), 0.6)
+            c.circle(tx, ty, 1.2, BURGUNDY)
+        else:
+            px, py = tx + pdx, ty + pdy
         c.circle(px, py, 5, BURGUNDY)
         c.ring(px, py, 5, WHITE, 1)
         c.text_center(px, py + 2.5, str(num), SANSB, SANSB_EM, SANSB_ASC,
