@@ -1438,8 +1438,8 @@ def draw_datecheck(c):
     c.frame(24, y, W - 48, h, BURGUNDY, 1.5)
     c.text(36, y + 16, "DATE CHECK", SERIF, SERIF_EM, SERIF_ASC, 13,
            BURGUNDY)
-    c.para(36, y + 26, FOOTER, SANS, SANS_EM, SANS_ASC, 7.8, INK, 308,
-           leading=8.6)
+    c.para(36, y + 24, FOOTER, SANS, SANS_EM, SANS_ASC, 7.8, INK, 308,
+           leading=8.0)
     colw = 318
     for i, item in enumerate(DATE_CHECK):
         col = i // 4
