@@ -589,6 +589,252 @@ def draw_banner_scene(c, x, y, w, h, icon, rcol):
     ICONS[icon](c, x + w / 2 - 17, y + 3, 34)
 
 
+# ---- pictorial grid scenes (v3): drawn scenes, not icon tiles ----
+def _scene_sky(c, x, y, w, h, rcol, dark=False):
+    if dark:
+        c.vgrad(x, y, w, h, (18, 24, 48), (38, 52, 92))
+        for sx, sy in ((0.12, 0.2), (0.3, 0.12), (0.55, 0.25),
+                       (0.78, 0.15), (0.9, 0.3), (0.42, 0.35)):
+            c.circle(x + w * sx, y + h * sy, 1.4, (235, 235, 220))
+        return
+    light = tuple(int(v + (255 - v) * 0.85) for v in rcol)
+    mid = tuple(int(v + (255 - v) * 0.5) for v in rcol)
+    c.vgrad(x, y, w, h, light, mid)
+    c.circle(x + w - 14, y + 11, 6, (238, 196, 120))
+
+
+def _scene_ground(c, x, y, w, h, rcol):
+    sil = tuple(int(v * 0.55) for v in rcol)
+    c.rect(x, y + h - 8, w, 8, sil)
+
+
+def scene_g_bank(c, x, y, w, h, rcol):
+    _scene_sky(c, x, y, w, h, rcol)
+    bx, bw = x + w * 0.22, w * 0.56
+    by = y + h - 8
+    c.polygon([(bx - 4, y + h * 0.30), (bx + bw / 2, y + h * 0.12),
+               (bx + bw + 4, y + h * 0.30)], NAVY)
+    c.rect(bx + bw / 2 - 1, y + h * 0.04, 2, h * 0.09, NAVY)
+    c.polygon([(bx + bw / 2 + 1, y + h * 0.04),
+               (bx + bw / 2 + 11, y + h * 0.075),
+               (bx + bw / 2 + 1, y + h * 0.11)], BURGUNDY)
+    for i in range(4):
+        cx = bx + 6 + i * (bw - 16) / 3
+        c.rect(cx, y + h * 0.33, 5, h * 0.42, WHITE)
+    c.rect(bx - 3, y + h * 0.76, bw + 6, 4, NAVY)
+    c.rect(bx - 7, y + h * 0.83, bw + 14, 4, NAVY)
+    _scene_ground(c, x, y, w, h, rcol)
+
+
+def scene_g_train(c, x, y, w, h, rcol):
+    _scene_sky(c, x, y, w, h, rcol)
+    gy = y + h - 8
+    for i in range(5):
+        ty = gy - 2 - i * 3
+        c.hline(x + w * 0.30 - i * 4, ty, w * 0.40 + i * 8,
+                (90, 90, 96), 1.4)
+    c.line(x + w * 0.34, gy, x + w * 0.44, y + h * 0.42,
+           (60, 60, 66), 2)
+    c.line(x + w * 0.66, gy, x + w * 0.56, y + h * 0.42,
+           (60, 60, 66), 2)
+    tx, tw = x + w * 0.33, w * 0.34
+    c.rect(tx, y + h * 0.16, tw, h * 0.30, BURGUNDY)
+    c.rect(tx + 4, y + h * 0.22, tw - 8, h * 0.12, (200, 220, 235))
+    c.circle(tx + 8, y + h * 0.41, 3, (250, 230, 150))
+    c.circle(tx + tw - 8, y + h * 0.41, 3, (250, 230, 150))
+    sx = x + w * 0.82
+    c.rect(sx, y + h * 0.28, 3, h * 0.5, INK)
+    c.circle(sx + 1.5, y + h * 0.24, 4.5, RED)
+    _scene_ground(c, x, y, w, h, rcol)
+
+
+def scene_g_chess(c, x, y, w, h, rcol):
+    _scene_sky(c, x, y, w, h, rcol)
+    bx, by, bw, bh = x + w * 0.14, y + h * 0.52, w * 0.72, h * 0.36
+    for r in range(3):
+        for col in range(6):
+            if (r + col) % 2 == 0:
+                c.rect(bx + col * bw / 6, by + r * bh / 3, bw / 6,
+                       bh / 3, (240, 234, 220))
+            else:
+                c.rect(bx + col * bw / 6, by + r * bh / 3, bw / 6,
+                       bh / 3, (120, 110, 96))
+    kx = x + w * 0.42
+    c.polygon([(kx, y + h * 0.50), (kx + 4, y + h * 0.34),
+               (kx + 9, y + h * 0.46), (kx + 14, y + h * 0.30),
+               (kx + 19, y + h * 0.46), (kx + 24, y + h * 0.34),
+               (kx + 28, y + h * 0.50)], INK)
+    c.rect(kx + 2, y + h * 0.50, 24, 4, INK)
+    px = x + w * 0.66
+    c.circle(px + 6, y + h * 0.38, 5, INK)
+    c.polygon([(px, y + h * 0.54), (px + 3, y + h * 0.43),
+               (px + 9, y + h * 0.43), (px + 12, y + h * 0.54)], INK)
+    _scene_ground(c, x, y, w, h, rcol)
+
+
+def scene_g_flame(c, x, y, w, h, rcol):
+    _scene_sky(c, x, y, w, h, rcol)
+    bx, bw = x + w * 0.28, w * 0.44
+    c.rect(bx, y + h * 0.18, bw, h * 0.74, (96, 96, 108))
+    for r in range(4):
+        for col in range(3):
+            lit = (r == 0 and col == 1)
+            c.rect(bx + 6 + col * (bw - 16) / 2, y + h * 0.26 + r * h * 0.16,
+                   8, 7, ORANGE if lit else (210, 220, 232))
+    fx = bx + bw * 0.42
+    c.polygon([(fx, y + h * 0.30), (fx + 7, y + h * 0.10),
+               (fx + 14, y + h * 0.30)], ORANGE)
+    c.polygon([(fx + 3, y + h * 0.30), (fx + 7, y + h * 0.18),
+               (fx + 11, y + h * 0.30)], RED)
+    for i, (ox, oy, rr) in enumerate(((0.30, 0.16, 5), (0.38, 0.08, 7),
+                                      (0.48, 0.14, 5))):
+        c.circle(bx + bw * ox + 6, y + h * oy, rr, (140, 140, 148))
+    _scene_ground(c, x, y, w, h, rcol)
+
+
+def scene_g_shield(c, x, y, w, h, rcol):
+    _scene_sky(c, x, y, w, h, rcol)
+    dx, dy = x + w * 0.30, y + h * 0.16
+    c.rect(dx, dy + 4, 26, 7, INK)
+    for ox in (-6, 26):
+        c.line(dx + ox + 3, dy, dx + ox + 9, dy, INK, 2)
+        c.line(dx + ox + 6, dy, dx + ox + 6, dy + 5, INK, 2)
+    c.circle(dx + 13, dy + 15, 3.5, RED)
+    sx, sy, sw = x + w * 0.58, y + h * 0.30, w * 0.26
+    c.polygon([(sx, sy), (sx + sw, sy), (sx + sw, sy + h * 0.28),
+               (sx + sw / 2, sy + h * 0.52), (sx, sy + h * 0.28)], NAVY)
+    c.polygon([(sx + 5, sy + 5), (sx + sw - 5, sy + 5),
+               (sx + sw - 5, sy + h * 0.26), (sx + sw / 2, sy + h * 0.44),
+               (sx + 5, sy + h * 0.26)], GOLD)
+    _scene_ground(c, x, y, w, h, rcol)
+
+
+def scene_g_drop(c, x, y, w, h, rcol):
+    _scene_sky(c, x, y, w, h, rcol)
+    gy = y + h - 8
+    for i, (fx, fh) in enumerate(((0.16, 0.34), (0.40, 0.44),
+                                  (0.64, 0.30))):
+        tx, tw = x + w * fx, w * 0.20
+        c.rect(tx, gy - h * fh, tw, h * fh, (150, 156, 166))
+        c.polygon([(tx, gy - h * fh), (tx + tw / 2, gy - h * fh - 7),
+                   (tx + tw, gy - h * fh)], (110, 116, 128))
+    cx = x + w * 0.50
+    c.rect(cx, y + h * 0.14, 6, h * 0.34, (90, 94, 104))
+    c.polygon([(cx - 2, y + h * 0.16), (cx + 3, y + h * 0.04),
+               (cx + 8, y + h * 0.16)], ORANGE)
+    c.hline(x + w * 0.14, gy - 6, w * 0.72, (90, 94, 104), 2)
+    _scene_ground(c, x, y, w, h, rcol)
+
+
+def scene_g_ball(c, x, y, w, h, rcol):
+    _scene_sky(c, x, y, w, h, rcol)
+    c.rect(x + w * 0.08, y + h * 0.30, w * 0.84, h * 0.34, NAVY2)
+    c.polygon([(x + w * 0.08, y + h * 0.30), (x + w * 0.5, y + h * 0.16),
+               (x + w * 0.92, y + h * 0.30)], NAVY)
+    for fx in (0.12, 0.84):
+        lx = x + w * fx
+        c.rect(lx, y + h * 0.10, 3, h * 0.24, INK)
+        c.circle(lx + 1.5, y + h * 0.09, 4, (250, 240, 180))
+    c.rect(x, y + h - 14, w, 6, (70, 140, 70))
+    bx, by = x + w * 0.46, y + h * 0.68
+    c.circle(bx, by, 9, WHITE)
+    c.circle(bx, by, 3, INK)
+    for ox, oy in ((-6, -4), (6, -4), (-5, 5), (5, 5)):
+        c.circle(bx + ox, by + oy, 2, INK)
+    _scene_ground(c, x, y, w, h, rcol)
+
+
+def scene_g_scroll(c, x, y, w, h, rcol):
+    _scene_sky(c, x, y, w, h, rcol)
+    bx, bw = x + w * 0.20, w * 0.60
+    c.polygon([(bx - 4, y + h * 0.28), (bx + bw / 2, y + h * 0.10),
+               (bx + bw + 4, y + h * 0.28)], BURGUNDY)
+    c.rect(bx + bw / 2 - 1, y + h * 0.02, 2, h * 0.09, INK)
+    c.polygon([(bx + bw / 2 + 1, y + h * 0.02),
+               (bx + bw / 2 + 12, y + h * 0.055),
+               (bx + bw / 2 + 1, y + h * 0.09)], ORANGE)
+    for i in range(4):
+        cx = bx + 6 + i * (bw - 16) / 3
+        c.rect(cx, y + h * 0.31, 5, h * 0.36, WHITE)
+    sx, sy = x + w * 0.34, y + h * 0.70
+    c.rect(sx, sy, w * 0.32, 10, (238, 228, 200))
+    c.circle(sx, sy + 5, 5, (238, 228, 200))
+    c.circle(sx + w * 0.32, sy + 5, 5, (238, 228, 200))
+    c.hline(sx + 6, sy + 4, w * 0.32 - 12, GREY, 1)
+    c.hline(sx + 6, sy + 7, w * 0.32 - 12, GREY, 1)
+    _scene_ground(c, x, y, w, h, rcol)
+
+
+def scene_g_rocket(c, x, y, w, h, rcol):
+    _scene_sky(c, x, y, w, h, rcol, dark=True)
+    arc = []
+    for i in range(13):
+        t = i / 12
+        arc.append((x + w * t, y + h - 4 - 16 * math.sin(math.pi * t)))
+    arc += [(x + w, y + h), (x, y + h)]
+    c.polygon(arc, (46, 96, 160))
+    cx, cy = x + w * 0.5, y + h * 0.42
+    c.rect(cx - 16, cy - 6, 32, 12, (220, 224, 232))
+    c.rect(cx - 6, cy - 16, 12, 10, (200, 206, 216))
+    for sgn in (-1, 1):
+        px = cx + sgn * 34 - (14 if sgn > 0 else 0)
+        c.rect(px, cy - 8, 14, 16, (52, 110, 190))
+        c.vline(px + 7, cy - 8, 16, (120, 170, 230), 1)
+        c.hline(px, cy, 14, (120, 170, 230), 1)
+    c.circle(cx, cy, 3, GOLD)
+
+
+def scene_g_chart(c, x, y, w, h, rcol):
+    _scene_sky(c, x, y, w, h, rcol)
+    sil = tuple(int(v * 0.55) for v in rcol)
+    for fx, fh in ((0.06, 0.4), (0.20, 0.55), (0.78, 0.5), (0.90, 0.38)):
+        c.rect(x + w * fx, y + h - 8 - h * fh, w * 0.09, h * fh, sil)
+    bars = (0.18, 0.28, 0.40, 0.55)
+    for i, bh in enumerate(bars):
+        c.rect(x + w * (0.34 + i * 0.11), y + h - 8 - h * bh, w * 0.08,
+               h * bh, GOLD if i < 3 else BURGUNDY)
+    c.line(x + w * 0.32, y + h * 0.62, x + w * 0.78, y + h * 0.22,
+           BURGUNDY, 2.4)
+    c.polygon([(x + w * 0.78, y + h * 0.22), (x + w * 0.70, y + h * 0.24),
+               (x + w * 0.76, y + h * 0.32)], BURGUNDY)
+    _scene_ground(c, x, y, w, h, rcol)
+
+
+def scene_g_missile(c, x, y, w, h, rcol):
+    _scene_sky(c, x, y, w, h, rcol)
+    sil = tuple(int(v * 0.55) for v in rcol)
+    for fx, fh in ((0.04, 0.34), (0.16, 0.48), (0.28, 0.30),
+                   (0.68, 0.42), (0.82, 0.30), (0.92, 0.44)):
+        c.rect(x + w * fx, y + h - 8 - h * fh, w * 0.09, h * fh, sil)
+    icon_missile(c, x + w * 0.40, y + h * 0.06, h * 0.62)
+    _scene_ground(c, x, y, w, h, rcol)
+
+
+def scene_g_virus(c, x, y, w, h, rcol):
+    _scene_sky(c, x, y, w, h, rcol)
+    cx, cy, r = x + w * 0.36, y + h * 0.44, h * 0.26
+    for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1), (0.7, 0.7),
+                   (-0.7, 0.7), (0.7, -0.7), (-0.7, -0.7)):
+        c.line(cx + dx * r * 0.7, cy + dy * r * 0.7,
+               cx + dx * r * 1.25, cy + dy * r * 1.25, BURGUNDY, 2.4)
+        c.circle(cx + dx * r * 1.3, cy + dy * r * 1.3, 3, BURGUNDY)
+    c.circle(cx, cy, r, RED)
+    c.circle(cx - r * 0.3, cy - r * 0.2, r * 0.22, (240, 150, 150))
+    bx, by = x + w * 0.64, y + h * 0.34
+    c.rect(bx, by, w * 0.24, h * 0.50, WHITE)
+    c.rect(bx + w * 0.09, by + h * 0.10, w * 0.06, h * 0.30, RED)
+    c.rect(bx + w * 0.03, by + h * 0.20, w * 0.18, h * 0.10, RED)
+    _scene_ground(c, x, y, w, h, rcol)
+
+
+GRID_SCENES = {"bank": scene_g_bank, "train": scene_g_train,
+               "chess": scene_g_chess, "flame": scene_g_flame,
+               "shield": scene_g_shield, "drop": scene_g_drop,
+               "ball": scene_g_ball, "scroll": scene_g_scroll,
+               "rocket": scene_g_rocket, "chart": scene_g_chart,
+               "missile": scene_g_missile, "virus": scene_g_virus}
+
+
 # ---------------------------------------------------------------- stories
 # Every item happened or was first reported on Thursday 26 November
 # 2026, verified against its named source (event date and first
@@ -852,7 +1098,7 @@ REGION_NAMES = _RN
 REGION_COLORS = [NAVY, (90, 140, 60), BURGUNDY, (200, 110, 40),
                  (140, 60, 90), (160, 90, 30), (40, 120, 110),
                  (70, 160, 90), (30, 90, 160), TEAL, (110, 80, 140)]
-FOOTER = ("The 48 strongest of 78 verified stories, all first "
+FOOTER = ("The 33 strongest of 78 verified stories, all first "
           "reported on Thursday 26 November 2026. Kyiv: night of "
           "25–26 Nov, 26 Nov Kyiv time. Bogor: 23 Nov collapse, "
           "search resumed 26 Nov.")
@@ -1050,17 +1296,10 @@ def draw_region_strip(c):
                           SANSB, SANSB_EM, SANSB_ASC, 6.2, tc,
                           tracking=0.1)
         x += wseg
-    fcounts = {}
-    for f in FIELDS:
-        fcounts[f] = fcounts.get(f, 0) + 1
-    ranked = sorted(fcounts.items(), key=lambda kv: (-kv[1], kv[0]))
-    line = "%d FIELDS · " % len(fcounts) + " · ".join(
-        "%s %d" % (name, n) for (name, n) in ranked)
-    c.text_center(W // 2, 124, line, SANSB, SANSB_EM, SANSB_ASC, 6.4, INK)
 
 
 def draw_stats(c):
-    y, h = 132, 48
+    y, h = 118, 46
     c.hline(0, y, W, INK, 2)
     c.hline(0, y + 3, W, GOLD, 0.8)
     c.hline(0, y + h - 3, W, GOLD, 0.8)
@@ -1090,7 +1329,7 @@ def draw_hero(c, x, y, w, h, num, hero):
     c.rect(x, y, w, h, WHITE)
     c.frame(x, y, w, h, HAIR, 1)
     c.hline(x, y, w, BURGUNDY, 3)
-    SCENES[scene](c, x + 2, y + 5, w - 4, 80)
+    SCENES[scene](c, x + 2, y + 5, w - 4, 120)
     c.rect(x + 2, y + 5, 26, 26, NAVY)
     c.text_center(x + 15, y + 26, str(num), SERIF, SERIF_EM, SERIF_ASC,
                   17, WHITE)
@@ -1098,7 +1337,7 @@ def draw_hero(c, x, y, w, h, num, hero):
     c.rect(x + w - 2 - cw_, y + 5, cw_, 16, BURGUNDY)
     c.text_center(x + w - 2 - cw_ / 2, y + 17, chip, SANSB, SANSB_EM,
                   SANSB_ASC, 8.5, WHITE, tracking=0.6)
-    ty = y + 96
+    ty = y + 136
     c.text(x + 12, ty, place + " · " + cat, SANSB, SANSB_EM, SANSB_ASC,
            9.5, BURGUNDY, tracking=1.0)
     draw_conf_badge(c, x + w - 12, ty - 9, HERO_CONF[num - 1])
@@ -1118,10 +1357,10 @@ def draw_grid_card(c, x, y, w, h, num, item):
     icon, place, cat, headline, summary, source = item
     c.rect(x, y, w, h, WHITE)
     c.frame(x, y, w, h, HAIR, 1)
-    # illustrated banner scene in the story's region tint
+    # large drawn pictorial scene for this story
     rcol = REGION_COLORS[REGIONS[num - 1]]
-    draw_banner_scene(c, x + 1, y + 1, w - 2, 40, icon, rcol)
-    c.hline(x + 1, y + 41, w - 2, rcol, 1.6)
+    GRID_SCENES[icon](c, x + 1, y + 1, w - 2, 78, rcol)
+    c.hline(x + 1, y + 79, w - 2, rcol, 1.6)
     c.rect(x + 3, y + 3, 24, 24, NAVY)
     c.text_center(x + 15, y + 20, str(num), SERIF, SERIF_EM, SERIF_ASC,
                   13, WHITE)
@@ -1130,9 +1369,9 @@ def draw_grid_card(c, x, y, w, h, num, item):
     c.rect(x + w - 6 - bw, y + 10, bw, 12, INK)
     c.text_center(x + w - 6 - bw / 2, y + 19, banner, SANSB, SANSB_EM,
                   SANSB_ASC, 6.5, WHITE, tracking=0.4)
-    c.text(x + 10, y + 55, place + " · " + cat, SANSB, SANSB_EM,
+    c.text(x + 10, y + 92, place + " · " + cat, SANSB, SANSB_EM,
            SANSB_ASC, 8, BURGUNDY, tracking=0.3)
-    ty = c.para(x + 10, y + 69, headline, SERIF, SERIF_EM, SERIF_ASC,
+    ty = c.para(x + 10, y + 106, headline, SERIF, SERIF_EM, SERIF_ASC,
                 11.5, INK, w - 20, leading=12.5)
     c.para(x + 10, ty + 1, summary, SERIFR, SERIFR_EM, SERIFR_ASC, 9,
            INK, w - 20, leading=10.5)
@@ -1149,36 +1388,29 @@ def draw_grid_card(c, x, y, w, h, num, item):
 
 def draw_bottom(c):
     counts = region_counts()
-    c.text(24, 680, "WHERE IT HAPPENED", SANSB, SANSB_EM, SANSB_ASC, 11,
+    c.text(24, 814, "WHERE IT HAPPENED", SANSB, SANSB_EM, SANSB_ASC, 11,
            INK, tracking=1.2)
-    c.text_right(384, 680, "dots = story numbers", SANSB, SANSB_EM,
+    c.text_right(384, 814, "dots = story numbers", SANSB, SANSB_EM,
                  SANSB_ASC, 8.5, GREY)
-    draw_map(c, 24, 688, 360, 110, PINS)
-    c.text(24, 812, "BY REGION", SANSB, SANSB_EM, SANSB_ASC, 9, NAVY,
+    draw_map(c, 24, 822, 360, 96, PINS)
+    c.text(24, 930, "BY REGION", SANSB, SANSB_EM, SANSB_ASC, 9, NAVY,
            tracking=1.0)
-    c.text(96, 812, "Nos. %s no pin"
+    c.text(96, 930, "Nos. %s no pin"
            % ", ".join(str(n) for n in NO_PIN), SANS, SANS_EM,
            SANS_ASC, 8, GREY)
     for i, name in enumerate(REGION_NAMES):
-        lx = 24 if i < 6 else 204
-        ry = 824 + (i % 6) * 11
+        lx = 24 + (i // 4) * 122
+        ry = 942 + (i % 4) * 10
         c.rect(lx, ry - 7, 9, 9, REGION_COLORS[i])
-        c.text(lx + 14, ry, "%s — %d" % (name, counts[i]), SANS, SANS_EM,
-               SANS_ASC, 8.5, INK)
-    c.text(24, 896, "ALL FIRST REPORTED THURSDAY 26 NOVEMBER 2026",
-           SANSB, SANSB_EM, SANSB_ASC, 8.5, NAVY, tracking=0.8)
-    c.para(24, 910, "%d stories, %d regions, %d fields. Every story "
-           "happened or was first reported on Thursday 26 November "
-           "2026 (any time zone, shown in UTC)."
-           % (len(FIELDS), len(REGION_NAMES), len(set(FIELDS))),
-           SANS, SANS_EM, SANS_ASC, 8, INK, 360, leading=10)
-    c.text(400, 680, "ALSO ON THURSDAY 26 NOVEMBER", SANSB, SANSB_EM,
+        c.text(lx + 13, ry, "%s — %d" % (name, counts[i]), SANS, SANS_EM,
+               SANS_ASC, 8, INK)
+    c.text(392, 814, "ALSO ON THURSDAY 26 NOVEMBER", SANSB, SANSB_EM,
            SANSB_ASC, 11, INK, tracking=1.2)
-    c.text_right(W - 24, 680, "%d more verified stories" % len(ALSO),
+    c.text_right(W - 24, 814, "%d more verified stories" % len(ALSO),
                  SANSB, SANSB_EM, SANSB_ASC, 9, GREY)
-    c.hline(400, 686, W - 424, HAIR, 0.8)
-    cols = [400, 706]
-    rows = [17, 16]
+    c.hline(392, 820, W - 408, HAIR, 0.8)
+    cols = [392, 690]
+    rows = [9, 9]
     i = 0
     for ci, nrows in enumerate(rows):
         for r in range(nrows):
@@ -1186,22 +1418,22 @@ def draw_bottom(c):
             num = i + 16
             i += 1
             x0 = cols[ci]
-            yy = 702 + r * 10.6
-            c.text(x0, yy, str(num), SANSB, SANSB_EM, SANSB_ASC, 8.6,
+            yy = 836 + r * 12
+            c.text(x0, yy, str(num), SANSB, SANSB_EM, SANSB_ASC, 9,
                    BURGUNDY)
             pcol = REGION_COLORS[REGIONS[num - 1]]
             if pcol == GOLD:
                 pcol = (150, 115, 20)
             nx = c.text(x0 + 23, yy, place + ": ", SANSB, SANSB_EM,
-                        SANSB_ASC, 8.6, pcol)
-            hx = c.text(nx, yy, head, SANS, SANS_EM, SANS_ASC, 8.6, INK)
+                        SANSB_ASC, 9, pcol)
+            hx = c.text(nx, yy, head, SANS, SANS_EM, SANS_ASC, 9, INK)
             if num in ALSO_CLAIM:
                 c.text(hx + 4, yy, "CLAIM", SANSB, SANSB_EM, SANSB_ASC,
                        7.6, BURGUNDY)
 
 
 def draw_datecheck(c):
-    y, h = 932, 46
+    y, h = 936, 46
     c.rect(24, y, W - 48, h, CREAM2)
     c.frame(24, y, W - 48, h, BURGUNDY, 1.5)
     c.text(36, y + 16, "DATE CHECK", SERIF, SERIF_EM, SERIF_ASC, 13,
@@ -1237,31 +1469,23 @@ def _validate():
     fcounts = {}
     for _f in FIELDS:
         fcounts[_f] = fcounts.get(_f, 0) + 1
-    ranked = sorted(fcounts.items(), key=lambda kv: (-kv[1], kv[0]))
-    fields_line = "%d FIELDS · " % len(fcounts) + " · ".join(
-        "%s %d" % (name, n) for (name, n) in ranked)
     top_right = ("%d STORIES · %d REGIONS · %d FIELDS · "
                  "THURSDAY 26 NOVEMBER 2026"
                  % (len(FIELDS), len(REGION_NAMES), len(fcounts)))
     strings = ["THE WORLD IN ONE DAY", top_right,
-               "Thursday 26 November 2026", SUBHEAD, fields_line,
+               "Thursday 26 November 2026", SUBHEAD,
                "ALSO ON THURSDAY 26 NOVEMBER",
                "%d more verified stories" % len(ALSO),
                "WHERE IT HAPPENED", "dots = story numbers", "BY REGION",
                "Nos. %s no pin" % ", ".join(str(n) for n in NO_PIN),
                "DATE CHECK",
-               "ALL FIRST REPORTED THURSDAY 26 NOVEMBER 2026",
-               "%d stories, %d regions, %d fields. Every story "
-               "happened or was first reported on Thursday 26 "
-               "November 2026 (any time zone, shown in UTC)."
-               % (len(FIELDS), len(REGION_NAMES), len(fcounts)),
                "X", "WHY IT MATTERS ", "CLAIM", "C", "R", "%",
                "OFFICIAL = official record · REPORTED = wire report "
                "· CLAIM = one side's statement · C/R on grid cards",
                FOOTER, FOOTER2, FOOTER_SOURCES]
     strings += DATE_CHECK + HERO_WHY + GRID_BANNER
     strings += HERO_CONF + GRID_CONF
-    strings += [str(n) for n in range(1, 49)]
+    strings += [str(n) for n in range(1, 34)]
     for (_sc, place, cat, head, summ, src, chip, _h) in HEROES:
         strings += [place, cat, head, summ, src, chip]
     for (num, label) in STATS:
@@ -1289,9 +1513,13 @@ def _validate():
         assert text_width(GRID_BANNER[gi], SANSB, SANSB_EM, 6.5, 0.4) \
             <= 70, GRID_BANNER[gi]
         assert len(wrap_text(summ, SERIFR, SERIFR_EM, 9, 140)) <= 2, summ
-    for (place, head) in ALSO:
-        line = place + ": " + head
-        assert text_width(line, SANSB, SANSB_EM, 7.4) <= 272, line
+    for ai, (place, head) in enumerate(ALSO):
+        drawn = 23 + text_width(place + ": ", SANSB, SANSB_EM, 9) + \
+            text_width(head, SANS, SANS_EM, 9)
+        if ai + 16 in ALSO_CLAIM:
+            drawn += 31
+        limit = 298 if ai < 9 else 320
+        assert drawn <= limit, place + ": " + head
     for (_num, label) in STATS:
         assert text_width(label, SANS, SANS_EM, 7.5, 0.6) <= 204, label
     total = sum(region_counts())
@@ -1301,7 +1529,6 @@ def _validate():
         if text_width(label, SANSB, SANSB_EM, 6.2, 0.1) > seg - 4:
             assert seg < 60, name  # tiny segments carry no label
     assert text_width(FOOTER_SOURCES, SANSB, SANSB_EM, 7.5, 0.2) <= CW
-    assert text_width(fields_line, SANSB, SANSB_EM, 6.4) <= CW
     assert text_width(top_right, SANSB, SANSB_EM, 8, 0.8) <= 720
     assert text_width("Thursday 26 November 2026", SERIF, SERIF_EM,
                       40) <= CW
@@ -1309,13 +1536,13 @@ def _validate():
     assert len(wrap_text(FOOTER, SANS, SANS_EM, 7.8, 308)) <= 3
     for item in DATE_CHECK:
         assert text_width(item, SANS, SANS_EM, 8) <= 300, item
-    assert len(FIELDS) == 48 and len(REGIONS) == 48
+    assert len(FIELDS) == 33 and len(REGIONS) == 33
     assert len(HERO_WHY) == 3 and len(GRID_BANNER) == 12
     assert all(v in ("OFFICIAL", "REPORTED", "CLAIM")
                for v in HERO_CONF + GRID_CONF)
-    assert len(HEROES) == 3 and len(GRID) == 12 and len(ALSO) == 33
-    assert len(PINS) == 45 and len(DATE_CHECK) == 8
-    assert sum(region_counts()) == 48
+    assert len(HEROES) == 3 and len(GRID) == 12 and len(ALSO) == 18
+    assert len(PINS) == 30 and len(DATE_CHECK) == 8
+    assert sum(region_counts()) == 33
     assert len(REGION_NAMES) == 11 and all(
         n > 0 for n in region_counts())
     assert all(p[0] not in NO_PIN for p in PINS)
@@ -1329,11 +1556,11 @@ def build():
     draw_region_strip(c)
     draw_stats(c)
     for i, hero in enumerate(HEROES):
-        draw_hero(c, 12 + i * 336, 186, 328, 200, i + 1, hero)
+        draw_hero(c, 12 + i * 336, 170, 328, 240, i + 1, hero)
     for i, item in enumerate(GRID):
         gx = 12 + (i % 6) * 168
-        gy = 390 + (i // 6) * 144
-        draw_grid_card(c, gx, gy, 160, 138, i + 4, item)
+        gy = 416 + (i // 6) * 196
+        draw_grid_card(c, gx, gy, 160, 190, i + 4, item)
     draw_bottom(c)
     draw_datecheck(c)
     draw_footer(c)
