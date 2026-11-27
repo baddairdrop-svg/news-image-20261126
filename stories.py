@@ -1,6 +1,6 @@
 # Story data for news-image-20261126, rebuild v3 (pictorial).
 #
-# Selection: the 33 strongest stories from the 78-story verified
+# Selection: the 41 strongest stories from the 78-story verified
 # pool for Thursday 26 November 2026 (every story happened or was
 # first reported that day, verified against its named source in
 # the research database). No story outside that pool is used.
@@ -122,15 +122,9 @@ STORIES = [
     ("also", "", "Berlin", "",
      "trial opens of woman accused of spying for Russia", "", "",
      2, "Justice", "REPORTED", "", (13.4, 52.5)),
-    ("also", "", "Odesa", "",
-     "Ukraine says Russia hit two grain ships", "", "",
-     3, "War", "CLAIM", "", (30.7, 46.5)),
     ("also", "", "East Coast", "",
      "Thanksgiving storm cuts power, cancels flights", "", "",
      0, "Disaster", "REPORTED", "", (-75.0, 38.5)),
-    ("also", "", "West Palm Beach", "",
-     "Trump demands probe of GDP figures", "", "",
-     0, "Economy", "CLAIM", "", (-80.0, 26.8)),
     ("also", "", "Buenos Aires", "",
      "Congress backs central-bank charter reform", "", "",
      1, "Economy", "REPORTED", "", (-58.4, -34.6)),
@@ -146,6 +140,36 @@ STORIES = [
     ("also", "", "Port-au-Prince", "",
      "WHO chief brings $1m hospital equipment", "", "",
      0, "Health", "REPORTED", "", (-72.3, 18.5)),
+    ("also", "", "Odesa", "",
+     "Ukraine says Russia hit two grain ships", "", "",
+     3, "War", "CLAIM", "", (30.7, 46.5)),
+    ("also", "", "West Palm Beach", "",
+     "Trump demands probe of GDP figures", "", "",
+     0, "Economy", "CLAIM", "", (-80.0, 26.8)),
+    ("also", "", "Tokyo", "",
+     "BoJ's Tamura signals faster hikes to neutral", "", "",
+     8, "Economy", "REPORTED", "", (139.7, 35.7)),
+    ("also", "", "Beijing", "",
+     "US chip curbs threaten Chinese AI development", "", "",
+     8, "Tech", "REPORTED", "", (116.4, 39.9)),
+    ("also", "", "London", "",
+     "Lord Mann opens BBC antisemitism investigation", "", "",
+     2, "Media", "REPORTED", "", (-0.12, 51.5)),
+    ("also", "", "Paris", "",
+     "about 2,000 students march over university funding", "", "",
+     2, "Society", "REPORTED", "", (2.35, 48.9)),
+    ("also", "", "Bucharest", "",
+     "prosecutors charge opposition leader Simion", "", "",
+     3, "Justice", "REPORTED", "", (26.1, 44.4)),
+    ("also", "", "Hicks Bay", "",
+     "M4.8 quake recorded off East Cape", "", "",
+     9, "Disaster", "REPORTED", "", (178.3, -37.5)),
+    ("also", "", "Sydney", "",
+     "Virgin Australia staff strike at four airports", "", "",
+     9, "Labour", "REPORTED", "", (151.2, -33.9)),
+    ("also", "", "Buenos Aires", "",
+     "CGT marches over health-fund crisis", "", "",
+     1, "Labour", "REPORTED", "", (-58.4, -34.6)),
 ]
 
 REGION_NAMES = ["N AMERICA", "S AMERICA", "W EUROPE", "E EUROPE",
